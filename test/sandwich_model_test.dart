@@ -20,18 +20,17 @@ void main() {
     });
 
     test(
-      'formattedPrice returns the price formatted as a string with a pound sign and two decimal places',
-      () {
-        const sandwich = Sandwich(
-          id: 'footlong',
-          name: 'Footlong Sub',
-          description: 'Test description',
-          price: 7.5,
-          imagePath: 'assets/images/footlong.jpeg',
-        );
+        'formattedPrice returns the price formatted as a string with a pound sign and two decimal places',
+        () {
+      const sandwich = Sandwich(
+        id: 'footlong',
+        name: 'Footlong Sub',
+        description: 'Test description',
+        price: 7.5,
+        imagePath: 'assets/images/footlong.jpeg',
+      );
 
-        expect(sandwich.formattedPrice, '£7.50');
-      }
-    );
+      expect(sandwich.formattedPrice, '£7.50');
+    });
   });
 }
