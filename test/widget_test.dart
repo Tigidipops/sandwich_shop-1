@@ -61,7 +61,7 @@ void main() {
       expect(find.byType(OrderScreen), findsOneWidget);
       expect(find.text('Order Footlong Sub'), findsOneWidget);
       expect(find.text('0 Footlong Sub sandwich(es): '), findsOneWidget);
-    
+
       await tester.tap(find.text('Add'));
       await tester.pump();
       expect(find.text('1 Footlong Sub sandwich(es): 🥪'), findsOneWidget);
@@ -69,7 +69,6 @@ void main() {
       await tester.tap(find.text('Remove'));
       await tester.pump();
       expect(find.text('0 Footlong Sub sandwich(es): '), findsOneWidget);
-    
     });
     testWidgets('OrderScreen quantity does not drop below zero',
         (WidgetTester tester) async {
@@ -92,7 +91,7 @@ void main() {
       expect(find.text('0 Test Sub sandwich(es): '), findsOneWidget);
     });
 
-       testWidgets('OrderScreen quantity does not exceed maxQuantity',
+    testWidgets('OrderScreen quantity does not exceed maxQuantity',
         (WidgetTester tester) async {
       const sandwich = Sandwich(
         id: 'test',
