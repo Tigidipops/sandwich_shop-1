@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sandwich_shop/screens/menu_screen.dart';
 import 'package:sandwich_shop/constants.dart';
 import 'package:sandwich_shop/screens/basket_screen.dart';
+import 'package:sandwich_shop/screens/settings_screen.dart';
 
 void main() {
   runApp(const App());
@@ -18,6 +19,7 @@ class App extends StatelessWidget {
       routes: {
         '/': (BuildContext context) => const MenuScreen(),
         '/basket': (BuildContext context) => const BasketScreen(),
+        '/settings': (BuildContext context) => const SettingsScreen(),
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
