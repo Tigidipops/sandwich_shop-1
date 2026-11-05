@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sandwich_shop/constants.dart';
 import 'package:sandwich_shop/models/user_settings.dart';
 import 'package:sandwich_shop/widgets/basket_button.dart';
 import 'package:sandwich_shop/widgets/primary_button.dart';
+
+const String prefName = 'user_name';
+const String prefAddress = 'user_address';
+const String prefEmail = 'user_email';
+const String prefNewsletter = 'user_newsletter';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -19,6 +25,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late TextEditingController _emailController;
   bool _receiveNewsletter = false;
   String _confirmationMessage = '';
+
+  Future<void> _LoadSettings() async {
+    final SharedPreferencesAsync prefs = SharedPreferencesAsync();
+    final String? savedName = await prefs.getString(prefName);
+    final String? savedAddress = await prefs.getString(prefAddress);
+    final String? savedEmail = await prefs.getString(prefEmail);
+    final bool? savedNewsletter = await prefs.getBool(prefNewsletter);
+
+    String name = '';
+    if (savedName != null) {
+      name = savedName;
+    }
+
+    String address = '';
+    if (savedAddress != null) {
+      address = savedAddress;
+    }
+
+    String email = '';
+    if (savedEmail != null) {
+      email = savedEmail;
+    }
+
+    bool newsletter = false;
+    if (savedNewsletter != null) {
+      newsletter = savedNewsletter;
+    }
+
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _nameController.text = name;
+      _addressController.text = address;
+      _emailController.text = email;
+      _receiveNewsletter = newsletter;
+    });
+  }
 
   @override
   void initState() {
