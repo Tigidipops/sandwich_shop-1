@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sandwich_shop/main.dart';
 import 'package:sandwich_shop/screens/basket_screen.dart';
 import 'package:sandwich_shop/screens/menu_screen.dart';
 import 'package:sandwich_shop/widgets/sandwich_card.dart';
 import 'package:sandwich_shop/screens/settings_screen.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
+import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 
 void main() {
   setUp(() {
     rootBundle.clear();
+    SharedPreferencesAsyncPlatform.instance =
+        InMemorySharedPreferencesAsync.empty();
   });
   testWidgets('Tapping the settings button navigates to SettingsScreen', (
     WidgetTester tester,
@@ -27,6 +30,7 @@ void main() {
         },
       ),
     );
+    await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.person_outline));
     await tester.pumpAndSettle();
@@ -38,7 +42,6 @@ void main() {
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(const MaterialApp(home: MenuScreen()));
-    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
 
     expect(find.byType(SandwichCard), findsWidgets);
@@ -62,7 +65,6 @@ void main() {
         },
       ),
     );
-    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.shopping_basket));

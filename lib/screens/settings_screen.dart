@@ -26,7 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _receiveNewsletter = false;
   String _confirmationMessage = '';
 
-  Future<void> _LoadSettings() async {
+  Future<void> _loadSettings() async {
     final SharedPreferencesAsync prefs = SharedPreferencesAsync();
     final String? savedName = await prefs.getString(prefName);
     final String? savedAddress = await prefs.getString(prefAddress);
@@ -70,6 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _nameController = TextEditingController();
     _addressController = TextEditingController();
     _emailController = TextEditingController();
+    _loadSettings();
   }
 
   @override
@@ -80,10 +81,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     super.dispose();
   }
 
-  void _saveSettings() {
+  Future<void> _saveSettings() async {
     final String name = _nameController.text.trim();
     final String address = _addressController.text.trim();
     final String email = _emailController.text.trim();
+    final SharedPreferencesAsync prefs = SharedPreferencesAsync();
+    await prefs.setString(prefName, name);
+    await prefs.setString(prefAddress, address);
+    await prefs.setString(prefEmail, email);
+    await prefs.setBool(prefNewsletter, _receiveNewsletter);
 
     final UserSettings settings = UserSettings(
       name: name,
@@ -92,6 +98,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       receiveNewsletter: _receiveNewsletter,
     );
 
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _confirmationMessage = 'Settings saved for ${settings.name}';
     });
