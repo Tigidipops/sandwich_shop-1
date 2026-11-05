@@ -1,7 +1,16 @@
+import 'dart:convert';
 import 'package:sandwich_shop/models/sandwich.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class SandwichRepository {
+  List<Sandwich>? _cachedSandwiches;
+
   List<Sandwich> getSandwiches() {
+    final List<Sandwich>? cachedSandwiches = _cachedSandwiches;
+    if (cachedSandwiches != null) {
+      return cachedSandwiches;
+    }
+
     return const [
       Sandwich(
         id: 'footlong',
@@ -29,5 +38,23 @@ class SandwichRepository {
       }
     }
     return null;
+  }
+
+  Future<List<Sandwich>> loadSandwichesFromAsset({
+    String assetPath = 'assets/data/sandwiches.json',
+  }) async {
+    final String jsonString = await rootBundle.loadString(assetPath);
+    final dynamic decodedData = json.decode(jsonString);
+    final List<dynamic> jsonList = decodedData as List<dynamic>;
+    final List<Sandwich> loadedSandwiches = [];
+
+    for (final dynamic item in jsonList) {
+      final Map<String, dynamic> itemMap = item as Map<String, dynamic>;
+      final Sandwich sandwich = Sandwich.fromJson(itemMap);
+      loadedSandwiches.add(sandwich);
+    }
+
+    _cachedSandwiches = loadedSandwiches;
+    return loadedSandwiches;
   }
 }
